@@ -12,6 +12,12 @@ logger = logging.getLogger(__name__)
 
 ACCOUNT_URL = 'https://www.hostker.com/'
 
+def validate_domain_to_record(domain):
+  domain_list = domain.split('.')[:-2]
+  if len(domain_list) > 0 and domain_list[-1] == '*':
+    domain_list = domain_list[:-1]
+  return '.'.join(domain_list)
+
 @zope.interface.implementer(interfaces.IAuthenticator)
 @zope.interface.provider(interfaces.IPluginFactory)
 class Authenticator(dns_common.DNSAuthenticator):
@@ -45,12 +51,12 @@ class Authenticator(dns_common.DNSAuthenticator):
   
   # add txt record
   def _perform(self, domain, validation_name, validation):
-    record_name = validation_name.split(f'.{domain}')[0]
+    record_name = validate_domain_to_record(validation_name)
     self._get_hostker_client().add_txt_record(domain, record_name, validation, self.ttl)
 
   # delete txt record
   def _cleanup(self, domain, validation_name, validation):
-    record_name = validation_name.split(f'.{domain}')[0]
+    record_name = validate_domain_to_record(validation_name)
     self._get_hostker_client().del_txt_record(domain, record_name)
 
   def _get_hostker_client(self):

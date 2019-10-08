@@ -7,10 +7,13 @@ import requests
 from certbot import errors
 from certbot import interfaces
 from certbot.plugins import dns_common
+from ker import Ker
+from ker import HostkerRequestError
 
 logger = logging.getLogger(__name__)
 
 ACCOUNT_URL = 'https://www.hostker.com/'
+
 
 def validate_domain_to_record(domain):
   domain_list = domain.split('.')[:-2]
@@ -66,57 +69,33 @@ class HostkerClient:
   """Encapsulates all communication with the Hostker API"""
 
   def __init__(self, email, token):
-    self.email = email
-    self.token = token
+    self.ker = Ker(email, token)
     
   
   def add_txt_record(self, domain, record_name, record_content, record_ttl):
-    params = {
-      'domain': domain,
-      'header': record_name,
-      'type': 'TXT',
-      'data': record_content,
-      'ttl': record_ttl,
-      'email': self.email,
-      'token': self.token,
-    }
-
-    r = requests.post('https://i.hostker.com/api/dnsAddRecord', data=params, headers={
-      'Content-Type': 'application/x-www-form-urlencoded'
-    })
-    result = r.json()
-    if result['success'] == 0:
-      raise errors.PluginError(result['errorMessage'])
+    try:
+      self.ker.dns.add(domain=domain, header=record_name, record_type='TXT', data=record_content, ttl=record_ttl)
+    except HostkerRequestError as err:
+      raise errors.PluginError(str(err))
     else:
       logger.debug('Successfully add TXT record')
 
   def del_txt_record(self, domain, record_name):
     record_ids = self._get_record_ids(domain, record_name)
-    for id in record_ids:
-      r = requests.post('https://i.hostker.com/api/dnsDeleteRecord', data={
-        'email': self.email,
-        'token': self.token,
-        'id': id
-      }, headers={
-      'Content-Type': 'application/x-www-form-urlencoded'
-      })
-      result = r.json()
-      if result['success'] == 0:
-        raise errors.PluginError(f'error when delete record: {result["errorMessage"]}')
+    for unique_id in record_ids:
+      try:
+        self.ker.dns.delete(unique_id)
+      except HostkerRequestError as err:
+        raise errors.PluginError(str(err))
       else:
         logger.debug('Successfully remove TXT record')
 
   def _get_record_ids(self, domain, record_name):
-    r = requests.post('https://i.hostker.com/api/dnsGetRecords', data={
-      'email': self.email,
-      'token': self.token,
-      'domain': domain
-    }, headers={
-      'Content-Type': 'application/x-www-form-urlencoded'
-    })
-    result = r.json()
-    if result['success'] == 0:
-      raise errors.PluginError(result['errorMessage'])
-    logger.debug(result)
-    records = list(filter(lambda record: record['header']==record_name and record['type'] == 'TXT', result['records']))
-    return [record['id'] for record in records]
+    try:
+      result = self.ker.dns.list(domain)
+    except HostkerRequestError as err:
+      raise errors.PluginError(str(err))
+    else:
+      logger.debug(result)
+      records = list(filter(lambda record: record['header']==record_name and record['type'] == 'TXT', result['records']))
+      return [record['id'] for record in records]

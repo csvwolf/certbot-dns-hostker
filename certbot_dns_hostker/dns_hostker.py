@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 
 ACCOUNT_URL = 'https://www.hostker.com/'
 
+def sub_domain_to_TLD(domain):
+  domain_list = domain.split('.')[-2:]
+  return '.'.join(domain_list)
 
 def validate_domain_to_record(domain):
   domain_list = domain.split('.')[:-2]
@@ -55,11 +58,13 @@ class Authenticator(dns_common.DNSAuthenticator):
   # add txt record
   def _perform(self, domain, validation_name, validation):
     record_name = validate_domain_to_record(validation_name)
+    domain = sub_domain_to_TLD(domain)
     self._get_hostker_client().add_txt_record(domain, record_name, validation, self.ttl)
 
   # delete txt record
   def _cleanup(self, domain, validation_name, validation):
     record_name = validate_domain_to_record(validation_name)
+    domain = sub_domain_to_TLD(domain)
     self._get_hostker_client().del_txt_record(domain, record_name)
 
   def _get_hostker_client(self):

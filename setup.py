@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
   name='certbot-dns-hostker',
-  version='0.0.1',
+  version='0.0.2',
   description='Certbot for Hostker DNS',
   author='SkyAo',
   author_email='csvwolf@qq.com',

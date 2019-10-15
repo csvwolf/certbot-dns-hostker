@@ -1,5 +1,7 @@
 # CertBot DNS Hostker
 
+[![Build Status](https://travis-ci.com/csvwolf/certbot-dns-hostker.svg?branch=master)](https://travis-ci.com/csvwolf/certbot-dns-hostker)
+
 ### Install
 ```
 pip install certbot-dns-hostker

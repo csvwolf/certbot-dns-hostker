@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>certbot_dns_hostker.dns_hostker API documentation</title>
+<meta name="description" content="DNS Authenticator for Hostker" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>certbot_dns_hostker.dns_hostker</code></h1>
+</header>
+<section id="section-intro">
+<p>DNS Authenticator for Hostker</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34; DNS Authenticator for Hostker &#34;&#34;&#34;
+
+import logging
+import zope.interface
+
+from certbot import errors
+from certbot import interfaces
+from certbot.plugins import dns_common
+from ker import Ker
+from ker import HostkerRequestError
+
+logger = logging.getLogger(__name__)
+
+ACCOUNT_URL = &#39;https://www.hostker.com/&#39;
+
+
+def sub_domain_to_tld(domain):
+    &#34;&#34;&#34;
+    Turn the input domain to get Top Level Domain
+    Args:
+        domain: any domain value
+    Returns:
+        TLD of input domain
+    &#34;&#34;&#34;
+    domain_list = domain.split(&#39;.&#39;)[-2:]
+    return &#39;.&#39;.join(domain_list)
+
+
+def validate_domain_to_record(domain):
+    &#34;&#34;&#34;
+    remove TLD part of validate domain record
+    Args:
+        domain: validate domain(include _acme-challenge.[input_domain]
+    Returns:
+        _acme-challenge.[input_domain_without_TLD]
+    &#34;&#34;&#34;
+    domain_list = domain.split(&#39;.&#39;)[:-2]
+    if len(domain_list) &gt; 0 and domain_list[-1] == &#39;*&#39;:
+        domain_list = domain_list[:-1]
+    return &#39;.&#39;.join(domain_list)
+
+
+@zope.interface.implementer(interfaces.IAuthenticator)
+@zope.interface.provider(interfaces.IPluginFactory)
+class Authenticator(dns_common.DNSAuthenticator):
+    &#34;&#34;&#34;Dns Authenticator for Hostker&#34;&#34;&#34;
+
+    description = (
+        &#39;Obtain certificates using a DNS TXT record(if you are using Hostker for DNS).&#39;)
+
+    ttl = 60
+
+    def __init__(self, *args, **kwargs):
+        super(Authenticator, self).__init__(*args, **kwargs)
+        self.credentials = None
+
+    @classmethod
+    def add_parser_arguments(cls, add): # pylint: disable=arguments-differ
+        super(Authenticator, cls).add_parser_arguments(add)
+        add(&#39;credentials&#39;, help=&#39;Hostker credentials INI file.&#39;)
+
+    def more_info(self): # pylint: disable=no-self-use
+        &#34;&#34;&#34;output info&#34;&#34;&#34;
+        return &#34;&#34;&#34;This plugin configures a DNS TXT record to\
+        response to a dns-01 challenge using the Hostker API&#34;&#34;&#34;
+
+    def _setup_credentials(self):
+        self.credentials = self._configure_credentials(
+            &#39;credentials&#39;,
+            &#39;Hostker credentials INI file&#39;,
+            {
+                &#39;email&#39;: &#39;email address associated with Hostker account&#39;,
+                &#39;token&#39;: f&#39;API token for Hostker account, obtained from {ACCOUNT_URL}&#39;
+            }
+        )
+
+    # add txt record
+    def _perform(self, domain, validation_name, validation):
+        record_name = validate_domain_to_record(validation_name)
+        domain = sub_domain_to_tld(domain)
+        self._get_hostker_client().add_txt_record(
+            domain, record_name, validation, self.ttl)
+
+    # delete txt record
+    def _cleanup(self, domain, validation_name, validation):
+        record_name = validate_domain_to_record(validation_name)
+        domain = sub_domain_to_tld(domain)
+        self._get_hostker_client().del_txt_record(domain, record_name)
+
+    def _get_hostker_client(self):
+        return HostkerClient(self.credentials.conf(
+            &#39;email&#39;), self.credentials.conf(&#39;token&#39;))
+
+
+class HostkerClient:
+    &#34;&#34;&#34;Encapsulates all communication with the Hostker API&#34;&#34;&#34;
+
+    def __init__(self, email, token):
+        self.ker = Ker(email, token)
+
+    def add_txt_record(self, domain, record_name, record_content, record_ttl):
+        &#34;&#34;&#34;
+        Args:
+            domain: etc. var.moe
+            record_name: etc. sky
+            record_content: etc. hello-world
+            record_ttl: etc. 300
+        &#34;&#34;&#34;
+        try:
+            self.ker.dns.add(
+                domain=domain,
+                header=record_name,
+                record_type=&#39;TXT&#39;,
+                data=record_content,
+                ttl=record_ttl)
+        except HostkerRequestError as err:
+            raise errors.PluginError(str(err))
+        else:
+            logger.debug(&#39;Successfully add TXT record&#39;)
+
+    def del_txt_record(self, domain, record_name):
+        &#34;&#34;&#34;
+        Args:
+            domain: etc. var.moe
+            record_name: etc. sky
+        &#34;&#34;&#34;
+        record_ids = self._get_record_ids(domain, record_name)
+        for unique_id in record_ids:
+            try:
+                self.ker.dns.delete(unique_id)
+            except HostkerRequestError as err:
+                raise errors.PluginError(str(err))
+            else:
+                logger.debug(&#39;Successfully remove TXT record&#39;)
+
+    def _get_record_ids(self, domain, record_name):
+        try:
+            result = self.ker.dns.list(domain)
+        except HostkerRequestError as err:
+            raise errors.PluginError(str(err))
+        else:
+            logger.debug(result)
+            records = list(
+                filter(
+                    lambda record: record[&#39;header&#39;] == record_name and record[&#39;type&#39;] == &#39;TXT&#39;,
+                    result[&#39;records&#39;]))
+            return [record[&#39;id&#39;] for record in records]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="certbot_dns_hostker.dns_hostker.sub_domain_to_tld"><code class="name flex">
+<span>def <span class="ident">sub_domain_to_tld</span></span>(<span>domain)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Turn the input domain to get Top Level Domain</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>domain</code></strong></dt>
+<dd>any domain value</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>TLD</code> of <code>input</code> <code>domain</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sub_domain_to_tld(domain):
+    &#34;&#34;&#34;
+    Turn the input domain to get Top Level Domain
+    Args:
+        domain: any domain value
+    Returns:
+        TLD of input domain
+    &#34;&#34;&#34;
+    domain_list = domain.split(&#39;.&#39;)[-2:]
+    return &#39;.&#39;.join(domain_list)</code></pre>
+</details>
+</dd>
+<dt id="certbot_dns_hostker.dns_hostker.validate_domain_to_record"><code class="name flex">
+<span>def <span class="ident">validate_domain_to_record</span></span>(<span>domain)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>remove TLD part of validate domain record</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>domain</code></strong></dt>
+<dd>validate domain(include _acme-challenge.[input_domain]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>_acme</code>-<code>challenge.</code>[<code>input_domain_without_TLD</code>]</dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_domain_to_record(domain):
+    &#34;&#34;&#34;
+    remove TLD part of validate domain record
+    Args:
+        domain: validate domain(include _acme-challenge.[input_domain]
+    Returns:
+        _acme-challenge.[input_domain_without_TLD]
+    &#34;&#34;&#34;
+    domain_list = domain.split(&#39;.&#39;)[:-2]
+    if len(domain_list) &gt; 0 and domain_list[-1] == &#39;*&#39;:
+        domain_list = domain_list[:-1]
+    return &#39;.&#39;.join(domain_list)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="certbot_dns_hostker.dns_hostker.Authenticator"><code class="flex name class">
+<span>class <span class="ident">Authenticator</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Dns Authenticator for Hostker</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Authenticator(dns_common.DNSAuthenticator):
+    &#34;&#34;&#34;Dns Authenticator for Hostker&#34;&#34;&#34;
+
+    description = (
+        &#39;Obtain certificates using a DNS TXT record(if you are using Hostker for DNS).&#39;)
+
+    ttl = 60
+
+    def __init__(self, *args, **kwargs):
+        super(Authenticator, self).__init__(*args, **kwargs)
+        self.credentials = None
+
+    @classmethod
+    def add_parser_arguments(cls, add): # pylint: disable=arguments-differ
+        super(Authenticator, cls).add_parser_arguments(add)
+        add(&#39;credentials&#39;, help=&#39;Hostker credentials INI file.&#39;)
+
+    def more_info(self): # pylint: disable=no-self-use
+        &#34;&#34;&#34;output info&#34;&#34;&#34;
+        return &#34;&#34;&#34;This plugin configures a DNS TXT record to\
+        response to a dns-01 challenge using the Hostker API&#34;&#34;&#34;
+
+    def _setup_credentials(self):
+        self.credentials = self._configure_credentials(
+            &#39;credentials&#39;,
+            &#39;Hostker credentials INI file&#39;,
+            {
+                &#39;email&#39;: &#39;email address associated with Hostker account&#39;,
+                &#39;token&#39;: f&#39;API token for Hostker account, obtained from {ACCOUNT_URL}&#39;
+            }
+        )
+
+    # add txt record
+    def _perform(self, domain, validation_name, validation):
+        record_name = validate_domain_to_record(validation_name)
+        domain = sub_domain_to_tld(domain)
+        self._get_hostker_client().add_txt_record(
+            domain, record_name, validation, self.ttl)
+
+    # delete txt record
+    def _cleanup(self, domain, validation_name, validation):
+        record_name = validate_domain_to_record(validation_name)
+        domain = sub_domain_to_tld(domain)
+        self._get_hostker_client().del_txt_record(domain, record_name)
+
+    def _get_hostker_client(self):
+        return HostkerClient(self.credentials.conf(
+            &#39;email&#39;), self.credentials.conf(&#39;token&#39;))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>certbot.plugins.dns_common.DNSAuthenticator</li>
+<li>certbot.plugins.common.Plugin</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="certbot_dns_hostker.dns_hostker.Authenticator.description"><code class="name">var <span class="ident">description</span></code></dt>
+<dd>
+<section class="desc"><p>str(object='') -&gt; str
+str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
+<p>Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.<strong>str</strong>() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.</p></section>
+</dd>
+<dt id="certbot_dns_hostker.dns_hostker.Authenticator.ttl"><code class="name">var <span class="ident">ttl</span></code></dt>
+<dd>
+<section class="desc"><p>int([x]) -&gt; integer
+int(x, base=10) -&gt; integer</p>
+<p>Convert a number or string to an integer, or return 0 if no arguments
+are given.
+If x is a number, return x.<strong>int</strong>().
+For floating point
+numbers, this truncates towards zero.</p>
+<p>If x is not a number or if base is given, then x must be a string,
+bytes, or bytearray instance representing an integer literal in the
+given base.
+The literal can be preceded by '+' or '-' and be surrounded
+by whitespace.
+The base defaults to 10.
+Valid bases are 0 and 2-36.
+Base 0 means to interpret the base from the string as an integer literal.</p>
+<pre><code>&gt;&gt;&gt; int('0b100', base=0)
+4
+</code></pre></section>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="certbot_dns_hostker.dns_hostker.Authenticator.add_parser_arguments"><code class="name flex">
+<span>def <span class="ident">add_parser_arguments</span></span>(<span>add)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add plugin arguments to the CLI argument parser.</p>
+<p>NOTE: If some of your flags interact with others, you can
+use cli.report_config_interaction to register this to ensure
+values are correctly saved/overridable during renewal.</p>
+<p>:param callable add: Function that proxies calls to
+<code>argparse.ArgumentParser.add_argument</code> prepending options
+with unique plugin name prefix.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def add_parser_arguments(cls, add): # pylint: disable=arguments-differ
+    super(Authenticator, cls).add_parser_arguments(add)
+    add(&#39;credentials&#39;, help=&#39;Hostker credentials INI file.&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="certbot_dns_hostker.dns_hostker.Authenticator.more_info"><code class="name flex">
+<span>def <span class="ident">more_info</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>output info</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def more_info(self): # pylint: disable=no-self-use
+    &#34;&#34;&#34;output info&#34;&#34;&#34;
+    return &#34;&#34;&#34;This plugin configures a DNS TXT record to\
+    response to a dns-01 challenge using the Hostker API&#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="certbot_dns_hostker.dns_hostker.HostkerClient"><code class="flex name class">
+<span>class <span class="ident">HostkerClient</span></span>
+<span>(</span><span>email, token)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Encapsulates all communication with the Hostker API</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HostkerClient:
+    &#34;&#34;&#34;Encapsulates all communication with the Hostker API&#34;&#34;&#34;
+
+    def __init__(self, email, token):
+        self.ker = Ker(email, token)
+
+    def add_txt_record(self, domain, record_name, record_content, record_ttl):
+        &#34;&#34;&#34;
+        Args:
+            domain: etc. var.moe
+            record_name: etc. sky
+            record_content: etc. hello-world
+            record_ttl: etc. 300
+        &#34;&#34;&#34;
+        try:
+            self.ker.dns.add(
+                domain=domain,
+                header=record_name,
+                record_type=&#39;TXT&#39;,
+                data=record_content,
+                ttl=record_ttl)
+        except HostkerRequestError as err:
+            raise errors.PluginError(str(err))
+        else:
+            logger.debug(&#39;Successfully add TXT record&#39;)
+
+    def del_txt_record(self, domain, record_name):
+        &#34;&#34;&#34;
+        Args:
+            domain: etc. var.moe
+            record_name: etc. sky
+        &#34;&#34;&#34;
+        record_ids = self._get_record_ids(domain, record_name)
+        for unique_id in record_ids:
+            try:
+                self.ker.dns.delete(unique_id)
+            except HostkerRequestError as err:
+                raise errors.PluginError(str(err))
+            else:
+                logger.debug(&#39;Successfully remove TXT record&#39;)
+
+    def _get_record_ids(self, domain, record_name):
+        try:
+            result = self.ker.dns.list(domain)
+        except HostkerRequestError as err:
+            raise errors.PluginError(str(err))
+        else:
+            logger.debug(result)
+            records = list(
+                filter(
+                    lambda record: record[&#39;header&#39;] == record_name and record[&#39;type&#39;] == &#39;TXT&#39;,
+                    result[&#39;records&#39;]))
+            return [record[&#39;id&#39;] for record in records]</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="certbot_dns_hostker.dns_hostker.HostkerClient.add_txt_record"><code class="name flex">
+<span>def <span class="ident">add_txt_record</span></span>(<span>self, domain, record_name, record_content, record_ttl)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>domain</code></strong></dt>
+<dd>etc. var.moe</dd>
+<dt><strong><code>record_name</code></strong></dt>
+<dd>etc. sky</dd>
+<dt><strong><code>record_content</code></strong></dt>
+<dd>etc. hello-world</dd>
+<dt><strong><code>record_ttl</code></strong></dt>
+<dd>etc. 300</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_txt_record(self, domain, record_name, record_content, record_ttl):
+    &#34;&#34;&#34;
+    Args:
+        domain: etc. var.moe
+        record_name: etc. sky
+        record_content: etc. hello-world
+        record_ttl: etc. 300
+    &#34;&#34;&#34;
+    try:
+        self.ker.dns.add(
+            domain=domain,
+            header=record_name,
+            record_type=&#39;TXT&#39;,
+            data=record_content,
+            ttl=record_ttl)
+    except HostkerRequestError as err:
+        raise errors.PluginError(str(err))
+    else:
+        logger.debug(&#39;Successfully add TXT record&#39;)</code></pre>
+</details>
+</dd>
+<dt id="certbot_dns_hostker.dns_hostker.HostkerClient.del_txt_record"><code class="name flex">
+<span>def <span class="ident">del_txt_record</span></span>(<span>self, domain, record_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>domain</code></strong></dt>
+<dd>etc. var.moe</dd>
+<dt><strong><code>record_name</code></strong></dt>
+<dd>etc. sky</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def del_txt_record(self, domain, record_name):
+    &#34;&#34;&#34;
+    Args:
+        domain: etc. var.moe
+        record_name: etc. sky
+    &#34;&#34;&#34;
+    record_ids = self._get_record_ids(domain, record_name)
+    for unique_id in record_ids:
+        try:
+            self.ker.dns.delete(unique_id)
+        except HostkerRequestError as err:
+            raise errors.PluginError(str(err))
+        else:
+            logger.debug(&#39;Successfully remove TXT record&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="certbot_dns_hostker" href="index.html">certbot_dns_hostker</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="certbot_dns_hostker.dns_hostker.sub_domain_to_tld" href="#certbot_dns_hostker.dns_hostker.sub_domain_to_tld">sub_domain_to_tld</a></code></li>
+<li><code><a title="certbot_dns_hostker.dns_hostker.validate_domain_to_record" href="#certbot_dns_hostker.dns_hostker.validate_domain_to_record">validate_domain_to_record</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="certbot_dns_hostker.dns_hostker.Authenticator" href="#certbot_dns_hostker.dns_hostker.Authenticator">Authenticator</a></code></h4>
+<ul class="">
+<li><code><a title="certbot_dns_hostker.dns_hostker.Authenticator.add_parser_arguments" href="#certbot_dns_hostker.dns_hostker.Authenticator.add_parser_arguments">add_parser_arguments</a></code></li>
+<li><code><a title="certbot_dns_hostker.dns_hostker.Authenticator.description" href="#certbot_dns_hostker.dns_hostker.Authenticator.description">description</a></code></li>
+<li><code><a title="certbot_dns_hostker.dns_hostker.Authenticator.more_info" href="#certbot_dns_hostker.dns_hostker.Authenticator.more_info">more_info</a></code></li>
+<li><code><a title="certbot_dns_hostker.dns_hostker.Authenticator.ttl" href="#certbot_dns_hostker.dns_hostker.Authenticator.ttl">ttl</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="certbot_dns_hostker.dns_hostker.HostkerClient" href="#certbot_dns_hostker.dns_hostker.HostkerClient">HostkerClient</a></code></h4>
+<ul class="">
+<li><code><a title="certbot_dns_hostker.dns_hostker.HostkerClient.add_txt_record" href="#certbot_dns_hostker.dns_hostker.HostkerClient.add_txt_record">add_txt_record</a></code></li>
+<li><code><a title="certbot_dns_hostker.dns_hostker.HostkerClient.del_txt_record" href="#certbot_dns_hostker.dns_hostker.HostkerClient.del_txt_record">del_txt_record</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

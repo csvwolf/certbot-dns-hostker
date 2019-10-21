@@ -1,4 +1,6 @@
 test:
+	python -m unittest certbot_dns_hostker/dns_hostker_test.py
+lint:
 	python3 -m pylint certbot_dns_hostker
 doc:
 	pdoc --html --output-dir docs certbot_dns_hostker --force

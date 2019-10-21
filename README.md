@@ -22,3 +22,6 @@ certbot_dns_hostker:dns_hostker_token=[your token]
 #### Why I can't run successful?
 
 f-string is a feature in Python3.6+, please ensure your python version.
+
+#### How about the Dockerfile?
+If you don't understand, do not use it.

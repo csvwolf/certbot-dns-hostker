@@ -2,7 +2,7 @@ zope
 acme==0.38.0
 asn1crypto==1.1.0
 astroid==2.3.1
-bleach==3.1.0
+bleach==3.1.1
 certbot==0.38.0
 certifi==2019.9.11
 cffi==1.12.3
